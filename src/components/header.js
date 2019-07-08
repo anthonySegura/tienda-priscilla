@@ -3,6 +3,7 @@ import Login from './login';
 import ShoppingCart from './shoppingCart';
 import {
   Navbar,
+  Nav,
   Form,
   FormControl,
   Button
@@ -18,18 +19,20 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar bg="light" sticky="top">
+      <Navbar bg="light" sticky="top" expand="lg">
         <Navbar.Brand href="#home">Tienda</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Form inline className="search-bar">
-          <FormControl type="text" placeholder="Buscar" className="mr-sm-2" />
-          <Button variant="outline-info" className="fa fa-search"></Button>
-        </Form>
-        <div className="cart-login-section">
-          <ShoppingCart />
-          <Login />
-        </div>
 
+        <Navbar.Collapse>
+          <Form inline className="search-bar">
+            <FormControl type="text" placeholder="Buscar" className="mr-sm-2" />
+            <Button variant="outline-info" className="fa fa-search"></Button>
+          </Form>
+          <div className="cart-login-section">
+            <ShoppingCart />
+            <Login />
+          </div>
+        </Navbar.Collapse>
       </Navbar>
     );
   }
