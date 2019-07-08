@@ -68,7 +68,10 @@ class MainView extends Component {
       <div>
         <Header />
         {this.renderProducts()}
-        <Paginator totalRecords={totalProducts} pageLimit={10} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+        <Paginator totalRecords={totalProducts}
+          pageLimit={10}
+          pageNeighbours={1}
+          onPageChanged={this.onPageChanged} />
       </div>
     );
   }

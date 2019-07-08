@@ -8,6 +8,24 @@ class Product extends Component {
     this.state = {
       count: 0
     }
+    this.addProduct = this.addProduct.bind(this);
+    this.removeProduct = this.removeProduct.bind(this);
+  }
+
+  addProduct() {
+    // Logica de agregar al carrito
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
+
+  removeProduct() {
+    // Logica de eliminar del carrito
+    if (this.state.count > 0) {
+      this.setState({
+        count: this.state.count - 1
+      })
+    }
   }
 
   render() {
@@ -19,9 +37,9 @@ class Product extends Component {
             <h5 className="card-title">{this.props.name}</h5>
             <h4 className="card-text price">&#8353; {this.props.price}</h4>
             <div className="stepper-input">
-              <span className="decrement" >-</span>
-              <input className="quantity" value={0} />
-              <span className="increment">+</span>
+              <span className="decrement" onClick={this.removeProduct}>-</span>
+              <input className="quantity" value={this.state.count} />
+              <span className="increment" onClick={this.addProduct}>+</span>
             </div>
             <span className="btn btn-primary add" >Agregar al carrito</span>
 

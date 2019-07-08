@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Login from './login';
 import ShoppingCart from './shoppingCart';
+import { Link } from 'react-router-dom';
 import {
   Navbar,
-  Nav,
   Form,
   FormControl,
   Button
@@ -14,24 +14,31 @@ class Header extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      show: true
+    }
   }
 
   render() {
     return (
       <Navbar bg="light" sticky="top" expand="lg">
-        <Navbar.Brand href="#home">Tienda</Navbar.Brand>
+        <Link to="/">
+          <Navbar.Brand href="#home">Tienda</Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse>
+
           <Form inline className="search-bar">
             <FormControl type="text" placeholder="Buscar" className="mr-sm-2" />
             <Button variant="outline-info" className="fa fa-search"></Button>
           </Form>
+
           <div className="cart-login-section">
             <ShoppingCart />
             <Login />
           </div>
+
         </Navbar.Collapse>
       </Navbar>
     );
