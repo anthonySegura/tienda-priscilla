@@ -10,6 +10,15 @@ span {
  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
+h5, a{
+  text-decoration: none !important;
+  color: inherit;
+}
+
+h5, a:hover {
+  color: inherit;
+}
+
 .navbar {
   /* background-color: #eef3ef !important; */
   background-color: #fff !important;

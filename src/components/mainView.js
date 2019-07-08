@@ -48,6 +48,7 @@ class MainView extends Component {
             this.state.currentProducts.map((p, i) => {
               return (
                 <Product key={i}
+                  id={p.id}
                   name={p.name}
                   img={p.img}
                   price={p.price}

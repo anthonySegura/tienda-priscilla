@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class Product extends Component {
 
@@ -30,22 +30,25 @@ class Product extends Component {
 
   render() {
     return (
-      <div className="col-sm">
-        <div className="card text-center">
-          <div className="card-body">
-            <img src={this.props.img} alt={this.props.name} />
-            <h5 className="card-title">{this.props.name}</h5>
-            <h4 className="card-text price">&#8353; {this.props.price}</h4>
-            <div className="stepper-input">
-              <span className="decrement" onClick={this.removeProduct}>-</span>
-              <input className="quantity" value={this.state.count} />
-              <span className="increment" onClick={this.addProduct}>+</span>
-            </div>
-            <span className="btn btn-primary add" >Agregar al carrito</span>
+     
+        <div className="col-sm">
+          <Link to={`/producto/${this.props.id}`}>
+            <div className="card text-center">
+              <div className="card-body">
+                <img src={this.props.img} alt={this.props.name} />
+                <h5 className="card-title" >{this.props.name}</h5>
+                <h4 className="card-text price">&#8353; {this.props.price}</h4>
+                <div className="stepper-input">
+                  <span className="decrement" onClick={this.removeProduct}>-</span>
+                  <input className="quantity" value={this.state.count} />
+                  <span className="increment" onClick={this.addProduct}>+</span>
+                </div>
+                <span className="btn btn-primary add" >Agregar al carrito</span>
 
-          </div>
+              </div>
+            </div>
+          </Link>
         </div>
-      </div>
     );
   }
 }
