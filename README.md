@@ -1,1 +1,1 @@
-[Ir a la página](https://tienda-react.herokuapp.com/).
+[Visitar página en Heroku](https://tienda-react.herokuapp.com/).
