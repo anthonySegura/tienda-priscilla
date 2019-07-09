@@ -96,10 +96,10 @@ class Login extends Component {
             afterChange: this.afterTabsChange.bind(this)
           }}
           loginError={{
-            label: "Couldn't sign in, please try again."
+            label: "{Hubo un error iniciando sesión, por favor intente de nuevo}"
           }}
           registerError={{
-            label: "Couldn't sign up, please try again."
+            label: "Hubo un error en el registro, por favor intente de nuevo."
           }}
           startLoading={this.startLoading.bind(this)}
           finishLoading={this.finishLoading.bind(this)}

@@ -3,7 +3,8 @@ import Header from './header';
 import Paginator from './pagination';
 import Product from './product';
 import { getProducts } from '../api_requests/requests';
-import { Container, Row, Col } from 'react-bootstrap';
+import store from '../redux_store/state';
+import {update_products} from '../redux_store/actions';
 
 class MainView extends Component {
 
@@ -15,13 +16,18 @@ class MainView extends Component {
       currentPage: null,
       totalPages: null
     }
+    // Se enlaza el estado del componente al estado global de la aplicación
+    // para cuando se actualiza los productos en las busquedas se refresque este vista
+    store.subscribe(() => {
+      this.setState({
+        allProducts: store.getState().products
+      })
+    });
   }
 
   async componentDidMount() {
     let products = await getProducts();
-    this.setState({
-      allProducts: products.products
-    });
+    store.dispatch(update_products(products.products))
   }
 
   onPageChanged = data => {

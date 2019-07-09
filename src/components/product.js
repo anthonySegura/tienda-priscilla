@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import store from '../redux_store/state';
+import { add_product, remove_product } from '../redux_store/actions';
 
 class Product extends Component {
 
@@ -20,7 +22,6 @@ class Product extends Component {
    * Aumenta la cantidad de unidades del producto
    */
   addProduct() {
-    // Logica de agregar al carrito
     this.setState({
       count: this.state.count + 1,
     })
@@ -45,6 +46,15 @@ class Product extends Component {
     this.setState({
       added: true
     })
+    let product = {
+      name: this.props.name,
+      id: this.props.id,
+      price: this.props.price,
+      img: this.props.img,
+      tax: this.props.tax,
+      units: this.state.count
+    }
+    store.dispatch(add_product(product));
   }
 
   /**
@@ -54,6 +64,7 @@ class Product extends Component {
     this.setState({
       added: false
     })
+    store.dispatch(remove_product(this.props.id));
   }
 
   handleCartAction() {
@@ -76,7 +87,7 @@ class Product extends Component {
               <span className="increment" onClick={this.addProduct}>+</span>
             </div>
             <span className={this.state.added ? "btn btn-danger" : "btn btn-primary"}
-                  onClick={this.handleCartAction} >
+              onClick={this.handleCartAction} >
               {this.state.added ? "Quitar del carrito" : "Agregar al carrito"}
             </span>
           </div>
