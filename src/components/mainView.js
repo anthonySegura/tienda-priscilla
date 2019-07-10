@@ -4,7 +4,8 @@ import Paginator from './pagination';
 import Product from './product';
 import { getProducts } from '../api_requests/requests';
 import store from '../redux_store/state';
-import {update_products} from '../redux_store/actions';
+import { update_products, search_products } from '../redux_store/actions';
+import emptyImg from '../no_results_found.png';
 
 class MainView extends Component {
 
@@ -26,8 +27,17 @@ class MainView extends Component {
   }
 
   async componentDidMount() {
-    let products = await getProducts();
-    store.dispatch(update_products(products.products))
+    let products;
+    let searchTerm = store.getState().searchTerm;
+    if (searchTerm !== '') {
+      products = []
+      store.dispatch(update_products(products));
+      store.dispatch(search_products(''));
+    }
+    else{
+      products = await getProducts();
+      store.dispatch(update_products(products.products));
+    }
   }
 
   onPageChanged = data => {
@@ -44,6 +54,7 @@ class MainView extends Component {
       totalPages: totalPages,
       currentProducts: currentProducts
     });
+
   }
 
   renderProducts() {
@@ -70,16 +81,25 @@ class MainView extends Component {
   render() {
     const { allProducts, currentProducts, currentPage, totalPages } = this.state;
     const totalProducts = allProducts.length;
-    if (totalProducts === 0) return null;
+
+    let view = <div>
+      <Header />
+      {this.renderProducts()}
+      <Paginator totalRecords={totalProducts}
+        pageLimit={10}
+        pageNeighbours={1}
+        onPageChanged={this.onPageChanged} />
+    </div>
+
+    let emptyView = <div>
+      <Header />
+      <img src={emptyImg} className="img-search-empty" />
+    </div>
+
+    if (totalProducts === 0) return emptyView;
+
     return (
-      <div>
-        <Header />
-        {this.renderProducts()}
-        <Paginator totalRecords={totalProducts}
-          pageLimit={10}
-          pageNeighbours={1}
-          onPageChanged={this.onPageChanged} />
-      </div>
+      view
     );
   }
 }

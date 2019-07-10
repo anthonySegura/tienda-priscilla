@@ -1,9 +1,11 @@
 import { createStore } from 'redux';
+import {getProducts} from '../api_requests/requests';
 
 const initialState = {
   cart: [],
   user: {},
-  products: []
+  products: [],
+  searchTerm: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -25,12 +27,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         products: action.payload
       }
+
+    case 'search':
+      return {
+        ...state,
+        searchTerm: action.payload
+      }
       
     case 'login':
       break;
 
     case 'logout':
       break;
+
+    default:
+      return state;  
   }
 }
 

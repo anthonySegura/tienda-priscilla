@@ -80,6 +80,31 @@ th, td {
   width: 500px;
 }
 
+.product-img-cart {
+  width: 50px;
+  height: 50px;
+}
+
+.img-empty {
+  position: absolute;
+   top: 50%;
+   left: 50%;
+   width: 495;
+   height: 391;
+   margin-top: -195px; /* Half the height */
+   margin-left: -247px; /* Half the width */
+}
+
+.img-search-empty {
+  position: absolute;
+   top: 50%;
+   left: 50%;
+   width: 555px;
+   height: 230px;
+   margin-top: -115px; /* Half the height */
+   margin-left: -277px; /* Half the width */
+}
+
 .card:hover {
   border-color: #999;
   box-shadow: 1px 2px #999;

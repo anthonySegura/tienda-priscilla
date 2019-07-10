@@ -18,9 +18,16 @@ class ShoppingCart extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      products: store.getState().cart
-    })
+    try {
+      this.setState({
+        products: store.getState().cart
+      })
+    }
+    catch (e) {
+      this.setState({
+        products: 0
+      })
+    }
   }
   
 

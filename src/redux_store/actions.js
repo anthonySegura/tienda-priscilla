@@ -1,3 +1,4 @@
+import { async } from "q";
 
 const add_product = (product) => {
   return {
@@ -33,10 +34,18 @@ const update_products = (products) => {
   }
 }
 
+const search_products = (text) => {
+  return {
+    type: 'search',
+    payload: text
+  }
+}
+
 export {
   add_product,
   remove_product,
   login,
   logout,
-  update_products
+  update_products,
+  search_products
 }
