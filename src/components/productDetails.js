@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Header from './header';
 import { getProduct } from '../api_requests/requests';
+import store from '../redux_store/state';
+import { add_product, remove_product } from '../redux_store/actions';
 
 class ProductDetails extends Component {
   constructor(props) {
@@ -11,8 +13,65 @@ class ProductDetails extends Component {
       price: '',
       img: '',
       stock: '',
-      tax: ''
+      tax: '',
+      count: 1,
+      added: false
     }
+    this.addProduct = this.addProduct.bind(this);
+    this.removeProduct = this.removeProduct.bind(this);
+    this.addToCart = this.addToCart.bind(this);
+    this.removeToCart = this.removeToCart.bind(this);
+    this.handleCartAction = this.handleCartAction.bind(this);
+  }
+
+  addProduct() {
+    this.setState({
+      count: this.state.count + 1,
+    })
+  }
+
+  /**
+   * Disminuye la cantidad de unidades del producto
+   */
+  removeProduct() {
+    // Logica de eliminar del carrito
+    if (this.state.count > 1) {
+      this.setState({
+        count: this.state.count - 1
+      })
+    }
+  }
+
+  /**
+   * Agrega el pedido de x unidades de producto al carrito
+   */
+  addToCart() {
+    this.setState({
+      added: true
+    })
+    let product = {
+      name: this.state.name,
+      id: this.state.id,
+      price: this.state.price,
+      img: this.state.img,
+      tax: this.state.tax,
+      units: this.state.count
+    }
+    store.dispatch(add_product(product));
+  }
+
+  /**
+   * Elimina el pedido del producto del carrito
+   */
+  removeToCart() {
+    this.setState({
+      added: false
+    })
+    store.dispatch(remove_product(this.props.id));
+  }
+
+  handleCartAction() {
+    this.state.added ? this.removeToCart() : this.addToCart();
   }
 
   async componentDidMount() {
@@ -63,18 +122,18 @@ class ProductDetails extends Component {
                           <td>Cantidad</td>
                           <td>
                             <div className="stepper-input">
-                              <span className="decrement">-</span>
+                              <span className="decrement" onClick={this.removeProduct}>-</span>
                               <input className="quantity" value={this.state.count} />
-                              <span className="increment">+</span>
+                              <span className="increment" onClick={this.addProduct}>+</span>
                             </div>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                     <span className={this.state.added ? "btn btn-danger" : "btn btn-primary"}
-                    >
+                      onClick={this.handleCartAction} >
                       {this.state.added ? "Quitar del carrito" : "Agregar al carrito"}
-                    </span> 
+                    </span>
                   </div>
                 </div>
               </div>

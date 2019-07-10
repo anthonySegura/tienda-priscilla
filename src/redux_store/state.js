@@ -33,6 +33,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         searchTerm: action.payload
       }
+
+    case 'cart_from_cookie':
+      return {
+        ...state,
+        cart: action.payload
+      }  
       
     case 'login':
       break;

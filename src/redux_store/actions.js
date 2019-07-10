@@ -1,4 +1,3 @@
-import { async } from "q";
 
 const add_product = (product) => {
   return {
@@ -41,11 +40,19 @@ const search_products = (text) => {
   }
 }
 
+const set_cart_from_cookie = (cart) => {
+  return {
+    type: 'cart_from_cookie',
+    payload: cart
+  }
+}
+
 export {
   add_product,
   remove_product,
   login,
   logout,
   update_products,
-  search_products
+  search_products,
+  set_cart_from_cookie 
 }

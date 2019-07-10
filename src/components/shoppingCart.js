@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import { Link } from 'react-router-dom';
 import store from '../redux_store/state';
+import cookie from 'react-cookies';
 
 class ShoppingCart extends Component {
   constructor(props) {
@@ -10,11 +11,19 @@ class ShoppingCart extends Component {
     this.state = {
       products: []
     }
-    store.subscribe(() => {
-      this.setState({
+    // Se suscribe el estado el componente al estado global de redux
+    store.subscribe(async () => {
+      await this.setState({
         products: store.getState().cart
       })
+      // Cada vez que se hace un cambio a los productos del carrito se actualiza la cookie
+      this.saveCookie(this.state.products);
     });
+  }
+
+  saveCookie(cart) {
+    cookie.remove('carrito', { path: '/' });
+    cookie.save('carrito', JSON.stringify(cart), { path: '/' });
   }
 
   componentDidMount() {
@@ -29,7 +38,6 @@ class ShoppingCart extends Component {
       })
     }
   }
-  
 
   render() {
     return (
