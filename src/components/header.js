@@ -13,7 +13,6 @@ import {
   Button
 }
   from 'react-bootstrap';
-import { throwStatement } from '@babel/types';
 
 class Header extends Component {
 
@@ -22,6 +21,7 @@ class Header extends Component {
     this.state = {
       text: ''
     }
+    
     this.handleTextChange = this.handleTextChange.bind(this);
     this.search = this.search.bind(this);
   }

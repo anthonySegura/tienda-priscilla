@@ -4,11 +4,24 @@ import CartView from './components/cartView';
 import App from './App';
 import ProductDetails from './components/productDetails';
 import store from './redux_store/state';
-import { set_cart_from_cookie } from './redux_store/actions';
+import { set_cart_from_cookie, login_action } from './redux_store/actions';
 import cookie from 'react-cookies';
 
 let cart = cookie.load('carrito');
-store.dispatch(set_cart_from_cookie(cart));
+let user = cookie.load('usuario');
+
+// Se carga el usuario y el carrito desde las cookies
+if (cart !== undefined) {
+  store.dispatch(set_cart_from_cookie(cart));
+}
+
+if (user !== undefined) {
+  let data = {
+    user: user,
+    cart: cart !== undefined ? cart : []
+  }
+  store.dispatch(login_action(data));
+}
 
 const routing = (
   <Router>

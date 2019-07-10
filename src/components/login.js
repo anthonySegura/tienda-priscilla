@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Buttom from 'react-bootstrap/Button';
 import ReactModalLogin from 'react-modal-login';
+import store from '../redux_store/state';
+import { login_action, logout } from '../redux_store/actions';
+import { login, register } from '../api_requests/requests';
+import cookie from 'react-cookies';
 import '../App.css';
 
 class Login extends Component {
@@ -20,7 +24,25 @@ class Login extends Component {
     this.finishLoading = this.finishLoading.bind(this);
     this.afterTabsChange = this.afterTabsChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.onLogin = this.onLogin.bind(this);
+    this.onRegister = this.onRegister.bind(this);
+    this.logout = this.logout.bind(this);
   }
+
+  componentDidMount() {
+    console.log(store.getState())
+    if (JSON.stringify(store.getState().user) !== '{}') {
+      this.setState({
+        logged: true
+      });
+    }
+    else{
+      this.setState({
+        logged: false
+      });
+    }
+  }
+  
 
   openModal() {
     this.setState({
@@ -36,6 +58,7 @@ class Login extends Component {
   }
 
   onLoginSuccess(method, response) {
+    console.log(response);
     console.log("logged successfully with " + method);
   }
 
@@ -64,16 +87,58 @@ class Login extends Component {
     });
   }
 
-  onLogin() {
-
+  saveCookie(user) {
+    cookie.save('usuario', user, { path: '/' });
   }
 
-  onRegister() {
+  async onLogin() {
+    let email = document.querySelector('#email').value;
+    let password = document.querySelector('#password').value;
+    let response = await login(email, password);
+    if (response !== {}) {
+      let user = response.user;
+      store.dispatch(login_action(response));
+      this.setState({
+        logged: true
+      });
+      this.closeModal();
+      this.saveCookie(user);
+    }
+    else {
+      this.setState({
+        error: true
+      })
+    }
+  }
+
+  async onRegister() {
+    let email = document.querySelector('#email').value;
+    let password = document.querySelector('#password').value;
+    let response = await register(email, password);
+    if (response) {
+      let user = {
+        email: email,
+        password: password
+      }
+      store.dispatch(login_action({
+        user: user,
+        cart: []
+      }));
+      this.setState({
+        logged: true
+      });
+      this.closeModal();
+      this.saveCookie(user);
+    }
 
   }
 
   logout() {
-
+    cookie.remove('usuario');
+    store.dispatch(logout());
+    this.setState({
+      logged: false
+    })
   }
 
   handleLogin() {
@@ -87,6 +152,7 @@ class Login extends Component {
           className={this.state.logged ? "fa fa-sign-out" : "fa fa-sign-in"}
           onClick={this.handleLogin}>
         </Buttom>
+        {this.state.logged ? store.getState().user.email : ''}
         <ReactModalLogin
           visible={this.state.showModal}
           onCloseModal={this.closeModal.bind(this)}
@@ -96,7 +162,7 @@ class Login extends Component {
             afterChange: this.afterTabsChange.bind(this)
           }}
           loginError={{
-            label: "{Hubo un error iniciando sesión, por favor intente de nuevo}"
+            label: "Datos incorrectos, por favor intente de nuevo"
           }}
           registerError={{
             label: "Hubo un error en el registro, por favor intente de nuevo."

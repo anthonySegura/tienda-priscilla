@@ -41,10 +41,17 @@ const reducer = (state = initialState, action) => {
       }  
       
     case 'login':
-      break;
+      return {
+        ...state,
+        user: action.payload.user,
+        cart: action.payload.cart
+      }
 
     case 'logout':
-      break;
+      return {
+        ...state,
+        user: {}
+      }
 
     default:
       return state;  

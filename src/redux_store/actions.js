@@ -13,7 +13,7 @@ const remove_product = (id) => {
   }
 }
 
-const login = (user) => {
+const login_action = (user) => {
   return {
     type: 'login',
     payload: user
@@ -50,7 +50,7 @@ const set_cart_from_cookie = (cart) => {
 export {
   add_product,
   remove_product,
-  login,
+  login_action,
   logout,
   update_products,
   search_products,
