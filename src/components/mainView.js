@@ -69,7 +69,8 @@ class MainView extends Component {
                   name={p.name}
                   img={p.img}
                   price={p.price}
-                  tax={p.tax} />
+                  tax={p.tax} 
+                  stock={p.stock}/>
               )
             })
           }

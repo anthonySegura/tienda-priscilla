@@ -25,9 +25,11 @@ class ProductDetails extends Component {
   }
 
   addProduct() {
-    this.setState({
-      count: this.state.count + 1,
-    })
+    if (this.state.count < this.state.stock) {
+      this.setState({
+        count: this.state.count + 1,
+      })
+    }
   }
 
   /**

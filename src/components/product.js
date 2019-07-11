@@ -22,9 +22,11 @@ class Product extends Component {
    * Aumenta la cantidad de unidades del producto
    */
   addProduct() {
-    this.setState({
-      count: this.state.count + 1,
-    })
+    if (this.state.count < this.props.stock) {
+      this.setState({
+        count: this.state.count + 1,
+      })
+    }
   }
 
   /**
