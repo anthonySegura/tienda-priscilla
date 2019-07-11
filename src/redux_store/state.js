@@ -5,7 +5,8 @@ const initialState = {
   cart: [],
   user: {},
   products: [],
-  searchTerm: ''
+  searchTerm: '',
+  showRegister: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -52,6 +53,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         user: {}
       }
+
+    case 'register_from_cart':
+      return {
+        ...state,
+        showRegister: action.payload
+      }  
 
     default:
       return state;  

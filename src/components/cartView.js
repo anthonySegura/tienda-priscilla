@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from './header';
 import store from '../redux_store/state';
-import { remove_product } from '../redux_store/actions';
+import { remove_product, register_from_cart } from '../redux_store/actions';
 import emptyCart from '../empty-cart.png';
 
 class CartView extends Component {
@@ -37,6 +37,16 @@ class CartView extends Component {
       total += this.state.products[i].price * this.state.products[i].units + this.state.products[i].tax;
     }
     this.total = total;
+  }
+
+  handleOrder() {
+    if (JSON.stringify(store.getState().user) !== '{}') {
+      // Se ordena la orden y se limpia el carrito
+    }
+    else {
+      // Se abre la vista del login
+      store.dispatch(register_from_cart(true));
+    }
   }
 
   renderProducts() {
@@ -110,7 +120,11 @@ class CartView extends Component {
                 <td><input type="text" placeholder="Dirección de envio"></input></td>
               </tr>
               <tr>
-                <button className="btn btn-primary" style={{ marginBottom: '2%' }}>Confirmar pedido</button>
+                <button className="btn btn-primary"
+                  style={{ marginBottom: '2%' }}
+                  onClick={this.handleOrder}>
+                  {JSON.stringify(store.getState().user) !== '{}' ? 'Realizar el pedido' : 'Registrese para finalizar su pedido'}
+                </button>
               </tr>
             </tbody>
           </table>

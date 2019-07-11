@@ -47,6 +47,13 @@ const set_cart_from_cookie = (cart) => {
   }
 }
 
+const register_from_cart = (show_modal) => {
+  return {
+    type: 'register_from_cart',
+    payload: show_modal
+  }
+}
+
 export {
   add_product,
   remove_product,
@@ -54,5 +61,6 @@ export {
   logout,
   update_products,
   search_products,
-  set_cart_from_cookie 
+  set_cart_from_cookie,
+  register_from_cart
 }

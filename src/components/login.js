@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Buttom from 'react-bootstrap/Button';
 import ReactModalLogin from 'react-modal-login';
 import store from '../redux_store/state';
-import { login_action, logout } from '../redux_store/actions';
+import { login_action, logout, register_from_cart } from '../redux_store/actions';
 import { login, register } from '../api_requests/requests';
 import cookie from 'react-cookies';
 import '../App.css';
@@ -17,6 +17,13 @@ class Login extends Component {
       loading: false,
       error: null
     }
+
+    store.subscribe(() => {
+      this.setState({
+        showModal: store.getState().showRegister
+      })
+    });
+
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onLoginFail = this.onLoginFail.bind(this);
@@ -36,13 +43,12 @@ class Login extends Component {
         logged: true
       });
     }
-    else{
+    else {
       this.setState({
         logged: false
       });
     }
   }
-  
 
   openModal() {
     this.setState({
@@ -55,6 +61,8 @@ class Login extends Component {
       showModal: false,
       error: null
     });
+
+    store.dispatch(register_from_cart(false));
   }
 
   onLoginSuccess(method, response) {
@@ -91,13 +99,24 @@ class Login extends Component {
     cookie.save('usuario', user, { path: '/' });
   }
 
+  prepareUserData (response) {
+    let user = response.user;
+    let cart = response.cart;
+    // FIXME: en caso de asignar el carrito de cache a un usuario al loguearse
+    // hay que mandarlo al api
+    return {
+      user: user,
+      cart: cart.length === 0 ? store.getState().cart : cart
+    }
+  }
+
   async onLogin() {
     let email = document.querySelector('#email').value;
     let password = document.querySelector('#password').value;
     let response = await login(email, password);
     if (response !== {}) {
       let user = response.user;
-      store.dispatch(login_action(response));
+      store.dispatch(login_action(this.prepareUserData(response)));
       this.setState({
         logged: true
       });
@@ -122,7 +141,7 @@ class Login extends Component {
       }
       store.dispatch(login_action({
         user: user,
-        cart: []
+        cart: store.getState().cart
       }));
       this.setState({
         logged: true
