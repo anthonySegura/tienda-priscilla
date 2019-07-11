@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './header';
-import { getProduct } from '../api_requests/requests';
+import { getProduct, removeToCart as removeToCartAPI, addToCart as addToCartAPI } from '../api_requests/requests';
 import store from '../redux_store/state';
 import { add_product, remove_product } from '../redux_store/actions';
 
@@ -47,7 +47,7 @@ class ProductDetails extends Component {
   /**
    * Agrega el pedido de x unidades de producto al carrito
    */
-  addToCart() {
+  async addToCart() {
     this.setState({
       added: true
     })
@@ -60,16 +60,26 @@ class ProductDetails extends Component {
       units: this.state.count
     }
     store.dispatch(add_product(product));
+    // Si el usuario esta logueado se actualiza su carrito
+    let user = store.getState().user;
+    if (JSON.stringify(user) !== '{}') {
+      await addToCartAPI(user.id, product.id);
+    }
   }
 
   /**
    * Elimina el pedido del producto del carrito
    */
-  removeToCart() {
+  async removeToCart() {
     this.setState({
       added: false
     })
     store.dispatch(remove_product(this.props.id));
+    // Si el usuario esta logueado se actualiza su carrito
+    let user = store.getState().user;
+    if (JSON.stringify(user) !== '{}') {
+      await removeToCartAPI(user.id, this.props.id);
+    }
   }
 
   handleCartAction() {

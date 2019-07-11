@@ -201,7 +201,7 @@ async function getProduct(id) {
 }
 
 async function login(email, password) {
-  // Verificar si los datos son correctos
+  // FIXME: recuperar el carrito en una consulta aparte
   return {
     user: {
       email: email,
@@ -215,9 +215,19 @@ async function register(email, password) {
   return true;
 }
 
+async function removeToCart(userId, productId) {
+  
+}
+
+async function addToCart(userId, productId) {
+
+}
+
 export {
   getProducts,
   getProduct,
   login,
-  register
+  register,
+  addToCart,
+  removeToCart
 };

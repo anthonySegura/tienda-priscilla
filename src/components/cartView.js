@@ -10,6 +10,8 @@ class CartView extends Component {
     super(props);
     this.state = {
       products: [],
+      orderEmail: [],
+      orderAddress: ''
     }
     store.subscribe(() => {
       this.setState({
@@ -18,13 +20,21 @@ class CartView extends Component {
     })
     this.total = 0;
     this.getTotal = this.getTotal.bind(this);
+    this.onAddressChange = this.onAddressChange.bind(this);
+    this.onEmailChange = this.onEmailChange.bind(this);
   }
 
   componentDidMount() {
-    // obtener el carrito desde el cookie
+    let user = store.getState().user;
     this.setState({
       products: store.getState().cart
-    })
+    });
+
+    if (JSON.stringify(user) !== '{}') {
+      this.setState({
+        orderEmail: user.email
+      })
+    }
   }
 
   removeProduct(id) {
@@ -37,6 +47,18 @@ class CartView extends Component {
       total += this.state.products[i].price * this.state.products[i].units + this.state.products[i].tax;
     }
     this.total = total;
+  }
+
+  onEmailChange(e) {
+    this.setState({
+      orderEmail: e.target.value
+    })
+  }
+
+  onAddressChange(e) {
+    this.setState({
+      orderAddress: e.target.value
+    })
   }
 
   handleOrder() {
@@ -114,10 +136,20 @@ class CartView extends Component {
           <table>
             <tbody>
               <tr>
-                <td><input type="email" placeholder="Correo electrónico"></input></td>
+                <td>
+                <input type="email" 
+                       placeholder="Correo electrónico" 
+                       value={this.state.orderEmail} 
+                       onChange={this.onEmailChange}/>
+                </td>
               </tr>
               <tr>
-                <td><input type="text" placeholder="Dirección de envio"></input></td>
+                <td>
+                  <input type="text" 
+                         placeholder="Dirección de envio" 
+                         value={this.state.orderAddress} 
+                         onChange={this.onAddressChange}/>
+                </td>
               </tr>
               <tr>
                 <button className="btn btn-primary"
